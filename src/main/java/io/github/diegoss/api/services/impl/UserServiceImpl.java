@@ -1,9 +1,11 @@
 package io.github.diegoss.api.services.impl;
 
 import io.github.diegoss.api.domain.User;
+import io.github.diegoss.api.domain.dto.UserDTO;
 import io.github.diegoss.api.repository.UserRepository;
 import io.github.diegoss.api.services.UserService;
 import io.github.diegoss.api.services.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ModelMapper mapper;
+
     @Override
     public User findById(Integer id) {
         return userRepository.findById(id)
@@ -24,5 +29,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User create(UserDTO obj) {
+        var user = mapper.map(obj, User.class);
+        return userRepository.save(user);
     }
 }
