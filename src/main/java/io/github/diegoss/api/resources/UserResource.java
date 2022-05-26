@@ -1,7 +1,8 @@
 package io.github.diegoss.api.resources;
 
-import io.github.diegoss.api.domain.User;
+import io.github.diegoss.api.domain.dto.UserDTO;
 import io.github.diegoss.api.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,11 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(userService.findById(id));
+    public ResponseEntity<UserDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(modelMapper.map(userService.findById(id), UserDTO.class));
     }
 }
