@@ -4,6 +4,7 @@ import io.github.diegoss.api.domain.User;
 import io.github.diegoss.api.domain.dto.UserDTO;
 import io.github.diegoss.api.repository.UserRepository;
 import io.github.diegoss.api.services.UserService;
+import io.github.diegoss.api.services.exceptions.DataIntegrityViolationException;
 import io.github.diegoss.api.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO obj) {
+        findByEmail(obj);
         var user = mapper.map(obj, User.class);
         return userRepository.save(user);
+    }
+
+    private void findByEmail(UserDTO obj){
+        var user = userRepository.findByEmail(obj.getEmail());
+
+        if(user.isPresent()){
+            throw new DataIntegrityViolationException("E-mail já cadastrado no sistema!");
+        }
     }
 }
