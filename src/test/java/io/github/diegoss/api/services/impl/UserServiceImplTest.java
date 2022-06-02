@@ -3,6 +3,7 @@ package io.github.diegoss.api.services.impl;
 import io.github.diegoss.api.domain.User;
 import io.github.diegoss.api.domain.dto.UserDTO;
 import io.github.diegoss.api.repository.UserRepository;
+import io.github.diegoss.api.services.exceptions.DataIntegrityViolationException;
 import io.github.diegoss.api.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -93,6 +94,19 @@ class UserServiceImplTest {
         assertNotNull(response);
         assertEquals(ID, response.getId());
         assertEquals(User.class, user.getClass());
+    }
+
+    @Test
+    void whenCreateThenReturnDataIntegritViolationException() {
+        when(repository.findByEmail(any())).thenReturn(optionalUser);
+
+        try{
+            userDTO.setId(2);
+            User response = service.create(userDTO);
+        } catch (Exception ex){
+            assertNotNull(ex);
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
+        }
     }
 
     @Test
