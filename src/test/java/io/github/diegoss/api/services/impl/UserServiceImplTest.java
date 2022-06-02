@@ -97,12 +97,12 @@ class UserServiceImplTest {
     }
 
     @Test
-    void whenCreateThenReturnDataIntegritViolationException() {
+    void whenCreateThenReturnDataIntegrityViolationException() {
         when(repository.findByEmail(any())).thenReturn(optionalUser);
 
         try{
             userDTO.setId(2);
-            User response = service.create(userDTO);
+            User response = service.update(userDTO);
         } catch (Exception ex){
             assertNotNull(ex);
             assertEquals(DataIntegrityViolationException.class, ex.getClass());
@@ -118,6 +118,19 @@ class UserServiceImplTest {
         assertNotNull(response);
         assertEquals(ID, response.getId());
         assertEquals(User.class, user.getClass());
+    }
+
+    @Test
+    void whenUpdateThenReturnDataIntegrityViolationException() {
+        when(repository.findByEmail(any())).thenReturn(optionalUser);
+
+        try{
+            userDTO.setId(2);
+            User response = service.create(userDTO);
+        } catch (Exception ex){
+            assertNotNull(ex);
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
+        }
     }
 
     @Test
