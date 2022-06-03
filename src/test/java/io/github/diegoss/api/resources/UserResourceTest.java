@@ -83,7 +83,7 @@ class UserResourceTest {
     }
 
     @Test
-    void whenCreateThenReturnUserDTO() {
+    void whenCreateThenReturnCreated() {
         when(userService.create(any())).thenReturn(user);
         var response = userResource.create(userDTO);
 
@@ -94,6 +94,16 @@ class UserResourceTest {
     }
 
     @Test
-    void update() {
+    void whenUpdateThenReturnUserDTO() {
+        when(userService.update(any())).thenReturn(user);
+        when(mapper.map(any(), any())).thenReturn(userDTO);
+
+        var response = userResource.update(userDTO, ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(UserDTO.class, response.getBody().getClass());
     }
 }
