@@ -61,6 +61,7 @@ class UserServiceImplTest {
         assertEquals(ID, response.getId());
         assertEquals(NAME, response.getName());
         assertEquals(EMAIL, response.getEmail());
+        assertEquals(PASSWORD, response.getPassword());
 
     }
 

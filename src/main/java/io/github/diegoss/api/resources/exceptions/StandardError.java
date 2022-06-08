@@ -4,10 +4,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Builder
 @AllArgsConstructor
-@NoArgsConstructor
-@Getter @Setter
+@Getter
 public class StandardError {
 
     private LocalDateTime timestamp;
